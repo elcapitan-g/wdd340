@@ -1,6 +1,124 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url("\images\site\checkerboard.jpg");
+  background-repeat: repeat;
+  margin: 0;
+  padding: 0;
 }
+.hero {
+  position: relative;
+  max-width: 800px;
+  margin: auto;
+}
+
+.hero img {
+  width: 100%;
+  display: block;
+}
+
+.details {
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  background-color: rgba(255, 255, 255, 0.708);
+  color: white;
+  padding: 20px;
+  max-width: 40%;
+  border-radius: 10px;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #f00;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #c00;
+}
+
+.upgrade {
+  background-color: #6baef7;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.upgrades-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.container {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border: 2px solid #000;
+  box-shadow: 0px 0px 8px #888;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav {
+  background: #222;
+  color: white;
+  text-align: center;
+  margin: 10px 0;
+}
+nav a {
+  padding: 10px 20px;
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+}
+h1 {
+  text-align: center;
+}
+.hero {
+  text-align: center;
+}
+.hero img {
+  width: 100%;
+}
+.hero .details {
+  color: #007bff;
+}
+.button {
+  background: #00aaff;
+  color: white;
+  padding: 10px 20px;
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.column {
+  width: 48%;
+}
+.upgrade, .review {
+  margin-bottom: 10px;
+}
+.upgrade img {
+  width: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+footer {
+  text-align: center;
+  font-size: 0.8em;
+  margin-top: 20px;
+}
+ 
