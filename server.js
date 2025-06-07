@@ -1,9 +1,7 @@
-// server.js (Main entry point for the application)
-
 const express = require("express");
 const app = express();
 
-// Import routes
+// Import routes and controllers
 const inventoryRoutes = require("./routes/inventoryRoutes");
 const baseController = require("./controllers/baseController");
 
@@ -19,12 +17,7 @@ app.use(express.json());  // For JSON payloads
 app.use("/inventory", inventoryRoutes);
 
 // Home page route (rendering index.ejs)
-app.get("/", (req, res) => {
-    res.render("index", {
-        title: "Welcome to Our Inventory Site",  // Title for the home page
-        // Any other data you want to pass to the view can go here
-    });
-});
+app.get("/", baseController.buildHome);  // Corrected route handler
 
 // Global error handler
 app.use(baseController.errorHandler);

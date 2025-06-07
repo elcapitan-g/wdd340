@@ -1,6 +1,6 @@
 // controllers/baseController.js
 
-const utilities = require("../utilities/");
+const utilities = require("../utilities/");  // Assuming utilities contains helper functions for navigation, etc.
 
 const baseController = {};
 
@@ -21,14 +21,15 @@ baseController.renderView = async (req, res, view, data = {}) => {
         const nav = await utilities.getNav(); // Assuming you have a utility function to get navigation
         const title = data.title || "Default Title"; // Set default title if not provided
         
+        // Render the view with navigation, title, and any additional data passed
         res.render(view, {
-            nav,
-            title,
-            ...data,  // Spread in any additional properties
+            nav,          // Common navigation
+            title,        // Page title
+            ...data,      // Spread additional data passed to the view (e.g. vehicle details, etc.)
         });
     } catch (error) {
         console.error("Error rendering view:", error);
-        next(error);  // Pass to the next error handler
+        next(error);  // Pass to the next error handler if view rendering fails
     }
 };
 
