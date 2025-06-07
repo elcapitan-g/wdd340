@@ -1,53 +1,48 @@
-const pool = require("../database/");
+const pool = require("../database/")
 
+/* ***************************
+ *  Get all classification data
+ * ************************** */
 async function getClassifications() {
-    try {
-        const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
-        return data.rows;
-    } catch (error) {
-        console.error("getClassifications error:", error);
-        return [];
-    }
+    return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
 }
 
-async function getInventories() {
-    try {
-        const data = await pool.query("SELECT * FROM public.inventory ORDER BY inv_make");
-        return data.rows;
-    } catch (error) {
-        console.error("getInventories error:", error);
-        return [];
-    }
-}
 
+/* ***************************
+ *  Get all inventory items and classification_name by classification_id
+ * ************************** */
 async function getInventoryByClassificationId(classification_id) {
     try {
-        const data = await pool.query(
-            `SELECT * 
-             FROM public.inventory AS i
-             JOIN public.classification AS c 
-             ON i.classification_id = c.classification_id
-             WHERE i.classification_id = $1`,
-            [classification_id] 
-        );
-        return data.rows;
+      const data = await pool.query(
+        `SELECT * FROM public.inventory AS i 
+        JOIN public.classification AS c 
+        ON i.classification_id = c.classification_id 
+        WHERE i.classification_id = $1`,
+        [classification_id]
+      )
+      return data.rows
     } catch (error) {
-        console.error(`getInventoryByClassificationId error: ${error}`);
-        return [];
+      console.error("getclassificationsbyid error " + error)
     }
-}
+  }
 
-async function getInventoryById(inv_id) {
+/* ***************************
+ *  Get a single inventory item by id
+ * ************************** */
+  async function getInventoryByInventoryId(inventoryId) {
     try {
-        const data = await pool.query(
-            'SELECT * FROM public.inventory WHERE inv_id = $1',
-            [inv_id]
-        );
-        return data.rows;
+      const data = await pool.query(
+        `SELECT * FROM public.inventory
+        INNER JOIN public.classification
+        ON public.inventory.classification_id = public.classification.classification_id
+        WHERE inv_id = $1`,
+        [inventoryId]
+      );
+      return data.rows;
     } catch (error) {
-        console.error("getInventoryById error:", error);
-        return [];
+      console.error("getInventoryByInventoryId error" + error)
     }
-}
+  }
 
-module.exports = { getClassifications, getInventories, getInventoryByClassificationId, getInventoryById };
+
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByInventoryId }

@@ -1,70 +1,40 @@
+const { request } = require("express")
+const invModel = require("../models/inventory-model")
+const utilities = require("../utilities/")
 
-const invModel = require("../models/inventory-model");
-const utilities = require("../utilities/");
-const baseController = require("./baseController");
+const invCont = {}
 
-const invCont = {};
-
-
+/**
+ * Build inventory by classification view
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
 invCont.buildByClassificationId = async function (req, res, next) {
-    const classification_id = req.params.classificationId;
-    console.log("Received Classification ID: ", classification_id);  
-
-    try {
-
-        const data = await invModel.getInventoryByClassificationId(classification_id);
-        console.log("Data from DB: ", data);  
-
-
-        if (!data || data.length === 0) {
-            console.log("No vehicles found for this classification.");
-            return res.status(404).send("No vehicles found for this classification.");
-        }
-
-
-        const grid = await utilities.buildByClassificationGrid(data);
-        const className = data[0].classification_name;
-
-        baseController.renderView(req, res, "./inventory/classification", {
-            title: className + " Vehicles",
-            grid,
-            classificationId: classification_id,  
-        });
-    } catch (error) {
-        console.error("Error in buildByClassificationId:", error);
-        next(error);  
-    }
-};
-
-
+    const classification_id = req.params.classificationId
+    const data = await invModel.getInventoryByClassificationId(classification_id)
+    const grid = await utilities.buildClassificationGrid(data)
+    let nav = await utilities.getNav()
+    const className = data[0].classification_name
+    res.render("./inventory/classification", {
+        title: className + " vehicles",
+        nav,
+        grid,
+    })
+}
 invCont.buildByInventoryId = async function (req, res, next) {
-    const inv_id = req.params.inv_id;
-    const classificationId = req.query.classificationId;  
-    console.log("Inventory ID: ", inv_id); 
+    const inventoryId = req.params.inventoryId;
+    //const data = await invModel.getInventoryByInventoryId(inventoryId + 5); // Buggy code
+    const data = await invModel.getInventoryByInventoryId(inventoryId); // Clean code
+    const listing = await utilities.buildItemListing(data[0]);
+    let nav = await utilities.getNav();
+    const itemName = `${data[0].inv_make} ${data[0].inv_model}`;
 
-    try {
-        const data = await invModel.getInventoryById(inv_id);
-        const grid = await utilities.buildInventoryDetail(data);
-
-        const item = data[0];
-
-        baseController.renderView(req, res, "./inventory/inventoryDetail", {
-            title: `${item.inv_year} ${item.inv_make} ${item.inv_model}`,
-            inv_year: item.inv_year,
-            inv_make: item.inv_make,
-            inv_model: item.inv_model,
-            inv_description: item.inv_description,
-            inv_image: item.inv_image,
-            inv_price: item.inv_price,
-            inv_miles: item.inv_miles,
-            inv_color: item.inv_color,
-            grid,
-            classificationId, 
-        });
-    } catch (error) {
-        console.error("Error in buildByInventoryId:", error);
-        next(error);  
-    }
-};
+    res.render("./inventory/listing", {
+        title: itemName,
+        nav,
+        listing,
+    })
+}
 
 module.exports = invCont;
