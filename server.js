@@ -1,5 +1,5 @@
 const express = require("express");
-const path = require("path");
+const path = require("path");  // Make sure 'path' module is imported
 const app = express();
 
 // Import routes and controllers
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));  // For form data
 app.use(express.json());  // For JSON payloads
 
 // Routes
-app.use("/inventory", inventoryRoutes);
+app.use("/inventory", inventoryRoutes);  // Prefix routes with '/inventory'
 
 // Home page route (rendering index.ejs)
 app.get("/", baseController.buildHome);  // Corrected route handler

@@ -12,16 +12,16 @@ invCont.buildByClassificationId = async function (req, res, next) {
     try {
         const data = await invModel.getInventoryByClassificationId(classification_id);
         const grid = await utilities.buildByClassificationGrid(data);
-        const className = data[0].classification_name; // Assuming the classification name is in the first record
+        const className = data[0].classification_name;
 
         baseController.renderView(req, res, "./inventory/classification", {
             title: className + " Vehicles",
             grid,
-            classificationId: classification_id, // Pass classificationId to view
+            classificationId: classification_id,  // Pass classificationId to the view
         });
     } catch (error) {
         console.error("Error in buildByClassificationId:", error);
-        next(error);  
+        next(error);
     }
 };
 
@@ -32,15 +32,11 @@ invCont.buildByInventoryId = async function (req, res, next) {
 
     try {
         const data = await invModel.getInventoryById(inv_id);
-        if (!data || data.length === 0) {
-            throw new Error("Inventory item not found");
-        }
+        const grid = await utilities.buildInventoryDetail(data);
 
-        const grid = await utilities.buildInventoryDetail(data); // Process grid, if necessary
-        const item = data[0]; // The actual inventory item
+        const item = data[0];
 
-        // Pass classificationId along with other data to the view
-        baseController.renderView(req, res, "inventory/inventorydetail", {
+        baseController.renderView(req, res, "./inventory/inventoryDetail", {
             title: `${item.inv_year} ${item.inv_make} ${item.inv_model}`,
             inv_year: item.inv_year,
             inv_make: item.inv_make,
@@ -55,7 +51,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
         });
     } catch (error) {
         console.error("Error in buildByInventoryId:", error);
-        next(error);  
+        next(error);
     }
 };
 
