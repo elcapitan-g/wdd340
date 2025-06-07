@@ -1,14 +1,12 @@
 // controllers/invController.js
 
-const invModel = require("../models/inventory-model");
-const utilities = require("../utilities/");
-const baseController = require("./baseController");
-
 const invCont = {};
 
 // Display vehicles by classification
 invCont.buildByClassificationId = async function (req, res, next) {
     const classification_id = req.params.classificationId;
+    console.log("Classification ID: ", classification_id);  // Add logging to check classificationId
+
     try {
         const data = await invModel.getInventoryByClassificationId(classification_id);
         const grid = await utilities.buildByClassificationGrid(data);
@@ -29,6 +27,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildByInventoryId = async function (req, res, next) {
     const inv_id = req.params.inv_id;
     const classificationId = req.query.classificationId;  // Get classificationId from query parameters
+    console.log("Inventory ID: ", inv_id);  // Log the inventory ID to check
 
     try {
         const data = await invModel.getInventoryById(inv_id);
