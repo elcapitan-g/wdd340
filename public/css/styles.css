@@ -1,8 +1,8 @@
 :root {
-  --primary-fg: rgb(115, 16, 16);
+  --primary-fg: rgb(102, 151, 255);
   --primary-bg: rgb(234, 242, 247);
   --secondary-fg: rgb(236, 229, 209);
-  --secondary-bg: rgb(41, 84, 18);
+  --secondary-bg: rgb(102, 151, 255);
   --pop: rgb(170, 7, 7);
   --decorative-font: "Anta", sans-serif;
   --body-font: Verdana, Geneva, Tahoma, sans-serif;
@@ -23,7 +23,7 @@ body {
   background-image: url('/images/site/small_check.jpg');
   background-position: top;
   background-attachment: fixed;
-  background-repeat: repeat-y;
+  background-repeat: repeat;
   margin: 0;
   font-family: var(--body-font);
   border-radius: 0;
@@ -39,9 +39,9 @@ header {
 nav {
   color: var(--secondary-fg);
   background-color: var(--secondary-bg);
-  background-image: linear-gradient(90deg, var(--secondary-bg), rgba(255, 255, 255, 0.258), var(--secondary-bg));
+  background-image: linear-gradient(90deg, var(--secondary-bg), rgba(102, 151, 255), var(--secondary-bg));
   width: 100%;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.703);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.535);
 }
 footer {
   overflow: hidden;
@@ -183,7 +183,7 @@ h1, h2, h3, h4 {
 .caption-image > p {
   padding: .5rem;
   margin: 0;
-  background-color: rgba(255, 255, 255, 0.127);
+  background-color: rgba(102, 151, 255);
   width: 100%;
   text-align: center;
   color: var(--secondary-fg);
