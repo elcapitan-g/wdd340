@@ -1,5 +1,9 @@
 // controllers/invController.js
 
+const invModel = require("../models/inventory-model");  // Ensure you import invModel here
+const utilities = require("../utilities/");
+const baseController = require("./baseController");
+
 const invCont = {};
 
 // Display vehicles by classification
