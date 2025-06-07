@@ -4,6 +4,14 @@ const utilities = require("../utilities/");  // Assuming utilities contains help
 
 const baseController = {};
 
+// Home page route handler
+baseController.buildHome = (req, res) => {
+    res.render("index", {
+        title: "Welcome to Our Inventory Site",
+        // You can add more data to be passed to the view, if necessary
+    });
+};
+
 // Common error handler
 baseController.errorHandler = (err, req, res, next) => {
     console.error("Error occurred:", err);
