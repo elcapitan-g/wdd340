@@ -19,7 +19,7 @@ header, footer, main {
 }
 
 body {
-  background-image: url('/images/site/small_check.jpg');
+  background-image: url('/images/site/checkerboard.jpg');
   background-position: top;
   background-attachment: fixed;
   background-repeat: repeat;
