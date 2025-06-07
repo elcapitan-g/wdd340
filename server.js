@@ -1,30 +1,36 @@
-/* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
-/* ***********************
- * Require Statements
- *************************/
-const express = require("express")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
+// server.js (Main entry point for the application)
 
-/* ***********************
- * Routes
- *************************/
-app.use(static)
+const express = require("express");
+const app = express();
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
+// Import routes
+const inventoryRoutes = require("./routes/inventoryRoutes");
+const baseController = require("./controllers/baseController");
 
-/* ***********************
- * Log statement to confirm server operation
- *************************/
-app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
-})
+// Set up the view engine (EJS)
+app.set("view engine", "ejs");
+app.set("views", "./views");  // Specify where views are stored
+
+// Middleware to parse incoming requests
+app.use(express.urlencoded({ extended: true }));  // For form data
+app.use(express.json());  // For JSON payloads
+
+// Routes
+app.use("/inventory", inventoryRoutes);
+
+// Home page route (rendering index.ejs)
+app.get("/", (req, res) => {
+    res.render("index", {
+        title: "Welcome to Our Inventory Site",  // Title for the home page
+        // Any other data you want to pass to the view can go here
+    });
+});
+
+// Global error handler
+app.use(baseController.errorHandler);
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

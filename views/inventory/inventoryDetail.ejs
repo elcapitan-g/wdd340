@@ -1,0 +1,29 @@
+<!-- views/inventory/inventoryDetail.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <header>
+        <h1><%= title %></h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/type/<%= classificationId %>">Back to Classification</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        <img src="<%= inv_image %>" alt="<%= inv_make %> <%= inv_model %>" />
+        <h2><%= inv_make %> <%= inv_model %> (<%= inv_year %>)</h2>
+        <p><strong>Price:</strong> $<%= inv_price.toLocaleString() %></p>
+        <p><strong>Miles:</strong> <%= inv_miles.toLocaleString() %> miles</p>
+        <p><strong>Color:</strong> <%= inv_color %></p>
+        <p><strong>Description:</strong> <%= inv_description %></p>
+    </section>
+</body>
+</html>
