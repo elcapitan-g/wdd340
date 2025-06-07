@@ -1,6 +1,6 @@
 // controllers/invController.js
 
-const invModel = require("../models/inventory-model");  // Ensure you import invModel here
+const invModel = require("../models/inventory-model");
 const utilities = require("../utilities/");
 const baseController = require("./baseController");
 
@@ -9,17 +9,20 @@ const invCont = {};
 // Display vehicles by classification
 invCont.buildByClassificationId = async function (req, res, next) {
     const classification_id = req.params.classificationId;
-    console.log("Classification ID: ", classification_id);  // Log to verify the ID
+    console.log("Received Classification ID: ", classification_id);  // Log the incoming classification ID
 
     try {
+        // Query the database for vehicles in this classification
         const data = await invModel.getInventoryByClassificationId(classification_id);
-        console.log("Data from query: ", data);  // Log the result of the query
+        console.log("Data from DB: ", data);  // Log the result from the database
 
-        // If no data is found, return an error message
+        // If no data is returned, handle it properly
         if (!data || data.length === 0) {
+            console.log("No vehicles found for this classification.");
             return res.status(404).send("No vehicles found for this classification.");
         }
 
+        // Proceed if data exists
         const grid = await utilities.buildByClassificationGrid(data);
         const className = data[0].classification_name;
 
@@ -30,7 +33,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
         });
     } catch (error) {
         console.error("Error in buildByClassificationId:", error);
-        next(error);  // Pass the error to the global error handler
+        next(error);  // Forward error to the global error handler
     }
 };
 
@@ -42,14 +45,8 @@ invCont.buildByInventoryId = async function (req, res, next) {
 
     try {
         const data = await invModel.getInventoryById(inv_id);
-        console.log("Data for inventory item: ", data);  // Log the inventory data
-
-        // If no data is found, return an error message
-        if (!data || data.length === 0) {
-            return res.status(404).send("Inventory item not found.");
-        }
-
         const grid = await utilities.buildInventoryDetail(data);
+
         const item = data[0];
 
         baseController.renderView(req, res, "./inventory/inventoryDetail", {
@@ -67,7 +64,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
         });
     } catch (error) {
         console.error("Error in buildByInventoryId:", error);
-        next(error);  // Pass the error to the global error handler
+        next(error);  // Forward error to the global error handler
     }
 };
 
