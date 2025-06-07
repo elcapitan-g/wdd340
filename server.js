@@ -32,7 +32,7 @@ const utilities = require("./utilities/index.js");
  *************************/
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.set("layout", "/layouts/layout"); // Not at view root
+app.set("layout", "layouts/layout"); // Not at view root
 
 /* ***********************
  * Routes
