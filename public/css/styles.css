@@ -8,7 +8,6 @@
   --body-font: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-/******* Change Box Model ***************/
 *,
 *:before,
 *:after {
@@ -146,7 +145,6 @@ h1, h2, h3, h4 {
   padding: 0;
 }
 
-/* Gallery */
 .gallery {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -156,14 +154,13 @@ h1, h2, h3, h4 {
 }
 
 
-/* Caption Image */
 .caption-image {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: var(--secondary-bg);
-  /* border: 2px solid var(--primary-fg); */
+
   color: var(--secondary-fg);
   border-radius: .5rem;
   overflow: hidden;
@@ -171,7 +168,7 @@ h1, h2, h3, h4 {
 
 .caption-image > div {
   
-  /* border: 1px solid var(--secondary-fg); */
+
   width: 100%;
   height: 100%;
   display: flex;
