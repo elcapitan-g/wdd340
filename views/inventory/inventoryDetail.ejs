@@ -1,22 +1,26 @@
-<!-- views/inventory/inventoryDetail.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE Motors</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body style="background: url('/images/site/checkerboard.jpg') repeat;">
+  <div class="container">
     <header>
-        <h1><%= title %></h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/inventory/type/<%= classificationId %>">Back to Classification</a></li>
-            </ul>
-        </nav>
+      <h2>CSE Motors</h2>
+      <a href="#">My Account</a>
     </header>
+
+    <nav>
+      <a href="/">Home</a>  
+      <a href="/inventory/type/1">Custom</a>  
+      <a href="/inventory/type/2">Sedan</a>   
+      <a href="/inventory/type/3">SUV</a>     
+      <a href="/inventory/type/4">Truck</a>   
+    </nav>
+
     <section>
         <img src="<%= inv_image %>" alt="<%= inv_make %> <%= inv_model %>" />
         <h2><%= inv_make %> <%= inv_model %> (<%= inv_year %>)</h2>
