@@ -1,6 +1,5 @@
-// server.js
-
 const express = require("express");
+const path = require("path");
 const app = express();
 
 // Import routes and controllers
@@ -10,6 +9,9 @@ const baseController = require("./controllers/baseController");
 // Set up the view engine (EJS)
 app.set("view engine", "ejs");
 app.set("views", "./views");  // Specify where views are stored
+
+// Serve static files (CSS, JS, images, etc.)
+app.use(express.static(path.join(__dirname, "public")));  // Public folder will now be accessible
 
 // Middleware to parse incoming requests
 app.use(express.urlencoded({ extended: true }));  // For form data
