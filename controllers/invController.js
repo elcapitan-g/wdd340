@@ -1,22 +1,24 @@
-// Import the inventory model
-const invModel = require("../models/inventory-model");  // Make sure the path is correct
-const utilities = require("../utilities/");  // Import utilities if needed
-const baseController = require("./baseController");  // Import base controller for rendering views
+// controllers/invController.js
 
 const invCont = {};
 
 // Display vehicles by classification
 invCont.buildByClassificationId = async function (req, res, next) {
     const classification_id = req.params.classificationId;
-    console.log("Classification ID: ", classification_id);  // Add logging to check classificationId
+    console.log("Classification ID: ", classification_id);  // Log to verify the ID
 
     try {
-        // Fetch data from the inventory model
         const data = await invModel.getInventoryByClassificationId(classification_id);
+        console.log("Data from query: ", data);  // Log the result of the query
+
+        // If no data is found, return an error message
+        if (!data || data.length === 0) {
+            return res.status(404).send("No vehicles found for this classification.");
+        }
+
         const grid = await utilities.buildByClassificationGrid(data);
         const className = data[0].classification_name;
 
-        // Render the view with the fetched data
         baseController.renderView(req, res, "./inventory/classification", {
             title: className + " Vehicles",
             grid,
@@ -35,13 +37,17 @@ invCont.buildByInventoryId = async function (req, res, next) {
     console.log("Inventory ID: ", inv_id);  // Log the inventory ID to check
 
     try {
-        // Fetch data from the inventory model
         const data = await invModel.getInventoryById(inv_id);
-        const grid = await utilities.buildInventoryDetail(data);
+        console.log("Data for inventory item: ", data);  // Log the inventory data
 
+        // If no data is found, return an error message
+        if (!data || data.length === 0) {
+            return res.status(404).send("Inventory item not found.");
+        }
+
+        const grid = await utilities.buildInventoryDetail(data);
         const item = data[0];
 
-        // Render the view with the fetched data
         baseController.renderView(req, res, "./inventory/inventoryDetail", {
             title: `${item.inv_year} ${item.inv_make} ${item.inv_model}`,
             inv_year: item.inv_year,
