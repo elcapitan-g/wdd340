@@ -1,24 +1,22 @@
-// models/inventory-model.js
-
 const pool = require("../database/");
 
 async function getClassifications() {
     try {
         const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
-        return data.rows;  // Ensure you return the result rows
+        return data.rows;
     } catch (error) {
         console.error("getClassifications error:", error);
-        return [];  // Return an empty array if there's an error
+        return [];
     }
 }
 
 async function getInventories() {
     try {
         const data = await pool.query("SELECT * FROM public.inventory ORDER BY inv_make");
-        return data.rows;  // Return result rows
+        return data.rows;
     } catch (error) {
         console.error("getInventories error:", error);
-        return [];  // Return an empty array if there's an error
+        return [];
     }
 }
 
@@ -32,10 +30,10 @@ async function getInventoryByClassificationId(classification_id) {
              WHERE i.classification_id = $1`,
             [classification_id] 
         );
-        return data.rows;  // Return result rows
+        return data.rows;
     } catch (error) {
         console.error(`getInventoryByClassificationId error: ${error}`);
-        return [];  // Return an empty array if there's an error
+        return [];
     }
 }
 
@@ -45,10 +43,10 @@ async function getInventoryById(inv_id) {
             'SELECT * FROM public.inventory WHERE inv_id = $1',
             [inv_id]
         );
-        return data.rows;  // Return result rows
+        return data.rows;
     } catch (error) {
         console.error("getInventoryById error:", error);
-        return [];  // Return an empty array if there's an error
+        return [];
     }
 }
 
