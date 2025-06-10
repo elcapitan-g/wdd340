@@ -12,7 +12,7 @@ try {
   const files = fs.readdirSync("./routes");
   console.log("✅ Files in ./routes:", files);
 } catch (err) {
-  console.error("❌ Could not read ./routes/:", err);
+  console.error("xCould not read ./routes/:", err);
 }
 
 // ✅ Load routes and utilities
@@ -38,13 +38,16 @@ app.use(session({
 }));
 app.use(flash());
 
+// ✅ Needed to parse form data from POST requests
+app.use(express.urlencoded({ extended: true }));
+
 // ✅ Make flash messages available in views
 app.use((req, res, next) => {
   res.locals.messages = () => req.flash();
   next();
 });
 
-// ✅ Auth token check (optional now)
+// ✅ Auth token check (no-op for now if login disabled)
 app.use(utilities.checkJWTToken);
 
 // ✅ Static and route mounting
