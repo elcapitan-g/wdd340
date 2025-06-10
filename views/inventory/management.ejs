@@ -1,5 +1,7 @@
 <h1><%= title %></h1>
 
+<%- messages() %>
+
 <% if (errors && errors.length > 0) { %>
   <ul class="notice">
     <% errors.forEach(error => { %>
@@ -16,7 +18,9 @@
 <h2>Manage Inventory</h2>
 <div class="input-box">
   <p>Select a classification from the list to see the items belonging to the classification.</p>
-  <%- classificationSelect %>
+  <form id="classificationForm">
+    <%- classificationSelect %>
+  </form>
   <table id="inventoryDisplay"></table>
 </div>
 

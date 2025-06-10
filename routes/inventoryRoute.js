@@ -1,50 +1,34 @@
-// Needed Resources 
 const express = require("express");
-const router = new express.Router(); 
-console.log("✅ inventoryRoute.js loaded!");
-
+const router = new express.Router();
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
 
-// 🔧 DEBUG TEST ROUTE — Safe after router is declared
-router.get("/test", (req, res) => res.send("✅ /inv/test works!"));
-
 // Inventory management main view
-router.get("/", 
-  utilities.checkAuthorizationManager, 
+router.get("/",
   utilities.handleErrors(invController.buildManagementView)
 );
-// Protect all inventory management routes
-router.use([
-  "/add-classification",
-  "/add-inventory",
-  "/edit/:inventoryId",
-  "/update",
-  "/delete/:inventoryId",
-  "/delete/"
-], utilities.checkAuthorizationManager);
 
 // AJAX route for classification selection
 router.get(
-  "/getInventory/:classification_id", 
+  "/getInventory/:classification_id",
   utilities.handleErrors(invController.getInventoryJSON)
 );
 
 // Classification view routes
 router.get(
-  "/type/:classificationId", 
+  "/type/:classificationId",
   utilities.handleErrors(invController.buildByClassificationId)
 );
 
 router.get(
-  "/detail/:inventoryId", 
+  "/detail/:inventoryId",
   utilities.handleErrors(invController.buildByInventoryId)
 );
 
-// Classification management routes
+// Classification management views
 router.get(
-  "/add-classification", 
+  "/add-classification",
   utilities.handleErrors(invController.buildAddClassification)
 );
 
@@ -55,9 +39,9 @@ router.post(
   utilities.handleErrors(invController.addClassification)
 );
 
-// Inventory management routes
+// Inventory management views
 router.get(
-  "/add-inventory", 
+  "/add-inventory",
   utilities.handleErrors(invController.buildAddInventory)
 );
 
@@ -68,9 +52,9 @@ router.post(
   utilities.handleErrors(invController.addInventory)
 );
 
-// Edit/update inventory routes
+// Edit inventory
 router.get(
-  "/edit/:inventoryId", 
+  "/edit/:inventoryId",
   utilities.handleErrors(invController.buildEditInventory)
 );
 
@@ -81,14 +65,14 @@ router.post(
   utilities.handleErrors(invController.updateInventory)
 );
 
-// Delete inventory routes
+// Delete inventory
 router.get(
-  "/delete/:inventoryId", 
+  "/delete/:inventoryId",
   utilities.handleErrors(invController.buildDeleteInventory)
 );
 
 router.post(
-  "/delete/", 
+  "/delete/",
   utilities.handleErrors(invController.deleteInventory)
 );
 

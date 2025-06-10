@@ -3,7 +3,7 @@ const utilities = require("../utilities");
 const validate = {};
 
 /* -------------------------------
- * Classification Validation Rules
+ * Classification Validation
  * ------------------------------ */
 validate.classificationRules = () => {
   return [
@@ -11,8 +11,11 @@ validate.classificationRules = () => {
       .trim()
       .escape()
       .notEmpty()
+      .withMessage("Classification name is required.")
       .isAlphanumeric()
-      .withMessage("Please provide a valid classification name."),
+      .withMessage("Classification name must be alphanumeric with no spaces.")
+      .isLength({ min: 1, max: 30 })
+      .withMessage("Classification name must be 1–30 characters long."),
   ];
 };
 
@@ -32,40 +35,54 @@ validate.checkClassificationData = async (req, res, next) => {
 };
 
 /* -------------------------------
- * Inventory Add Validation Rules
+ * Inventory Add Validation
  * ------------------------------ */
 validate.inventoryRules = () => {
   return [
     body("inv_make")
-      .trim().escape().notEmpty().isLength({ min: 1 })
-      .withMessage("Please provide a make."),
+      .trim().escape().notEmpty()
+      .withMessage("Make is required.")
+      .isLength({ min: 2, max: 50 })
+      .withMessage("Make must be 2–50 characters."),
     body("inv_model")
-      .trim().escape().notEmpty().isLength({ min: 1 })
-      .withMessage("Please provide a model."),
+      .trim().escape().notEmpty()
+      .withMessage("Model is required.")
+      .isLength({ min: 2, max: 50 })
+      .withMessage("Model must be 2–50 characters."),
     body("inv_year")
-      .trim().escape().notEmpty().isInt({ min: 1900, max: 2030 })
-      .withMessage("Year must be a number between 1900 and 2030."),
+      .trim().escape().notEmpty()
+      .withMessage("Year is required.")
+      .isInt({ min: 1900, max: 2030 })
+      .withMessage("Year must be between 1900 and 2030."),
     body("inv_description")
-      .trim().escape().notEmpty().isLength({ min: 1 })
-      .withMessage("Please provide a description."),
+      .trim().escape().notEmpty()
+      .withMessage("Description is required.")
+      .isLength({ min: 2, max: 100 })
+      .withMessage("Description must be 2–100 characters."),
     body("inv_image")
       .trim().escape().notEmpty()
-      .withMessage("Please provide an image path."),
+      .withMessage("Image path is required."),
     body("inv_thumbnail")
       .trim().escape().notEmpty()
-      .withMessage("Please provide a thumbnail path."),
+      .withMessage("Thumbnail path is required."),
     body("inv_price")
-      .trim().escape().notEmpty().isFloat()
-      .withMessage("Price must be a number."),
+      .trim().escape().notEmpty()
+      .withMessage("Price is required.")
+      .isFloat()
+      .withMessage("Price must be a valid number."),
     body("inv_miles")
-      .trim().escape().notEmpty().isInt()
-      .withMessage("Miles must be a number."),
+      .trim().escape().notEmpty()
+      .withMessage("Miles is required.")
+      .isInt()
+      .withMessage("Miles must be a whole number."),
     body("inv_color")
       .trim().escape().notEmpty()
-      .withMessage("Please provide a color."),
+      .withMessage("Color is required."),
     body("classification_id")
-      .notEmpty().isInt()
-      .withMessage("Please select a classification."),
+      .notEmpty()
+      .withMessage("Please select a classification.")
+      .isInt()
+      .withMessage("Classification ID must be a valid number."),
   ];
 };
 
