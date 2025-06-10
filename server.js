@@ -29,9 +29,8 @@ app.use(static);
 
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
-
 app.use("/inv", inventoryRoute);
-
+app.use("/account", accountRoute);
 app.use("/ierror", intentionalErrorRoute);
 
 app.use(async (req, res, next) => {
