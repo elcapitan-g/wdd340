@@ -5,14 +5,14 @@ const validate = {};
 
 validate.classificationRules = () => {
   return [
-    // firstname is required and must be string
+
     body("classification_name")
       .trim()
       .escape()
       .notEmpty()
       .isAlphanumeric()
       .isLength({ min: 1 })
-      .withMessage("Please provide a valid classification name."), // on error this message is sent.
+      .withMessage("Please provide a valid classification name."), 
   ];
 };
 
