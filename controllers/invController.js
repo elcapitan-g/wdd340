@@ -3,9 +3,7 @@ const utilities = require("../utilities/");
 
 const invCont = {};
 
-/**
- * Build inventory by classification view
- */
+
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId;
   const data = await invModel.getInventoryByClassificationId(classification_id);
@@ -29,9 +27,6 @@ invCont.buildByClassificationId = async function (req, res, next) {
   });
 };
 
-/**
- * Build the view to display a single vehicle
- */
 invCont.buildByInventoryId = async function (req, res, next) {
   const inventoryId = req.params.inventoryId;
   const data = await invModel.getInventoryByInventoryId(inventoryId);
@@ -46,9 +41,6 @@ invCont.buildByInventoryId = async function (req, res, next) {
   });
 };
 
-/**
- * Build the main vehicle management view
- */
 invCont.buildManagementView = async function (req, res, next) {
   const nav = await utilities.getNav();
   const classificationSelect = await utilities.buildClassificationList();
@@ -60,9 +52,6 @@ invCont.buildManagementView = async function (req, res, next) {
   });
 };
 
-/**
- * Build the add classification view
- */
 invCont.buildAddClassification = async function (req, res, next) {
   const nav = await utilities.getNav();
   res.render("inventory/addClassification", {
@@ -72,9 +61,6 @@ invCont.buildAddClassification = async function (req, res, next) {
   });
 };
 
-/**
- * Handle post request to add a vehicle classification
- */
 invCont.addClassification = async function (req, res, next) {
   const { classification_name } = req.body;
   const response = await invModel.addClassification(classification_name);
@@ -82,12 +68,12 @@ invCont.addClassification = async function (req, res, next) {
 
   if (response) {
     req.flash("notice", `The "${classification_name}" classification was successfully added.`);
-    const classificationSelect = await utilities.buildClassificationList(); // ✅ Fix: include dropdown again
+    const classificationSelect = await utilities.buildClassificationList(); 
     res.render("inventory/management", {
       title: "Vehicle Management",
       errors: null,
       nav,
-      classificationSelect, // ✅ Fix: ensure dropdown renders
+      classificationSelect, 
     });
   } else {
     req.flash("notice", `Failed to add ${classification_name}`);
@@ -100,9 +86,7 @@ invCont.addClassification = async function (req, res, next) {
   }
 };
 
-/**
- * Build the add inventory view
- */
+
 invCont.buildAddInventory = async function (req, res, next) {
   const nav = await utilities.getNav();
   const classifications = await utilities.buildClassificationList();
@@ -115,9 +99,7 @@ invCont.buildAddInventory = async function (req, res, next) {
   });
 };
 
-/**
- * Handle post request to add a vehicle to the inventory
- */
+
 invCont.addInventory = async function (req, res, next) {
   const nav = await utilities.getNav();
   const {
@@ -177,9 +159,7 @@ invCont.addInventory = async function (req, res, next) {
   }
 };
 
-/**
- * JSON endpoint for classification
- */
+
 invCont.getInventoryJSON = async (req, res, next) => {
   const classification_id = parseInt(req.params.classification_id);
   const invData = await invModel.getInventoryByClassificationId(classification_id);
@@ -190,9 +170,6 @@ invCont.getInventoryJSON = async (req, res, next) => {
   }
 };
 
-/**
- * Build the edit inventory view
- */
 invCont.buildEditInventory = async function (req, res, next) {
   const inventory_id = parseInt(req.params.inventoryId);
   const nav = await utilities.getNav();
@@ -209,9 +186,6 @@ invCont.buildEditInventory = async function (req, res, next) {
   });
 };
 
-/**
- * Handle post request to update a vehicle
- */
 invCont.updateInventory = async function (req, res, next) {
   const nav = await utilities.getNav();
   const {
@@ -268,9 +242,6 @@ invCont.updateInventory = async function (req, res, next) {
   }
 };
 
-/**
- * Build the delete inventory view
- */
 invCont.buildDeleteInventory = async function (req, res, next) {
   const inventory_id = parseInt(req.params.inventoryId);
   const nav = await utilities.getNav();
@@ -289,9 +260,6 @@ invCont.buildDeleteInventory = async function (req, res, next) {
   });
 };
 
-/**
- * Handle post request to delete a vehicle
- */
 invCont.deleteInventory = async function (req, res, next) {
   const nav = await utilities.getNav();
   const inventory_id = parseInt(req.body.inv_id);

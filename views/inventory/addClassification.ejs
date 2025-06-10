@@ -1,6 +1,6 @@
-<h1><%- title %></h1>
+<h1><%= title %></h1>
 
-<% if (messages.notice) { %>
+<% if (messages?.notice?.length) { %>
   <div class="notice">
     <% messages.notice.forEach(msg => { %>
       <p><%= msg %></p>
@@ -8,7 +8,7 @@
   </div>
 <% } %>
 
-<% if (errors && errors.array) { %>
+<% if (errors?.array?.length) { %>
   <ul class="notice">
     <% errors.array().forEach(error => { %>
       <li><%= error.msg %></li>
@@ -17,15 +17,16 @@
 <% } %>
 
 <form class="input-box" action="/inv/add-classification" method="post" novalidate>
-  <label>Classification Name
-    <input 
-      type="text" 
-      name="classification_name" 
-      required 
-      pattern="[A-Za-z0-9]+" 
-      title="Alphanumeric characters only, no spaces" 
-      value="<%= typeof classification_name !== 'undefined' ? classification_name : '' %>">
-  </label>
+  <label for="classification_name">Classification Name</label>
+  <input
+    type="text"
+    id="classification_name"
+    name="classification_name"
+    required
+    pattern="[A-Za-z0-9]+"
+    title="Alphanumeric characters only, no spaces"
+    value="<%= classification_name || '' %>">
   <span class="fine-print">Required. Alphanumeric, no spaces.</span>
+
   <input type="submit" value="Add Classification">
 </form>

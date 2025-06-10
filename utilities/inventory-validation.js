@@ -2,9 +2,7 @@ const { body, validationResult } = require("express-validator");
 const utilities = require("../utilities");
 const validate = {};
 
-/* -------------------------------
- * Classification Validation
- * ------------------------------ */
+
 validate.classificationRules = () => {
   return [
     body("classification_name")
@@ -34,9 +32,7 @@ validate.checkClassificationData = async (req, res, next) => {
   next();
 };
 
-/* -------------------------------
- * Inventory Add Validation
- * ------------------------------ */
+
 validate.inventoryRules = () => {
   return [
     body("inv_make")
@@ -102,9 +98,6 @@ validate.checkInventoryData = async (req, res, next) => {
   next();
 };
 
-/* -------------------------------
- * Inventory Update Validation
- * ------------------------------ */
 validate.checkUpdateData = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

@@ -1,6 +1,6 @@
-<h1><%- title %></h1>
+<h1><%= title %></h1>
 
-<% if (messages.notice) { %>
+<% if (messages?.notice?.length) { %>
   <div class="notice">
     <% messages.notice.forEach(msg => { %>
       <p><%= msg %></p>
@@ -8,7 +8,7 @@
   </div>
 <% } %>
 
-<% if (errors && errors.array) { %>
+<% if (errors?.array?.length) { %>
   <ul class="notice">
     <% errors.array().forEach(error => { %>
       <li><%= error.msg %></li>
@@ -17,35 +17,44 @@
 <% } %>
 
 <form class="input-box" action="/inv/add-inventory" method="post" novalidate>
-  <label>Make
-    <input type="text" name="inv_make" required value="<%= typeof inv_make !== 'undefined' ? inv_make : '' %>" minlength="2" maxlength="50">
-  </label>
-  <label>Model
-    <input type="text" name="inv_model" required value="<%= typeof inv_model !== 'undefined' ? inv_model : '' %>" minlength="2" maxlength="50">
-  </label>
-  <label>Year
-    <input type="number" name="inv_year" required value="<%= typeof inv_year !== 'undefined' ? inv_year : '' %>" min="1900" max="2030">
-  </label>
-  <label>Description
-    <textarea name="inv_description" required rows="5" minlength="2" maxlength="100"><%= typeof inv_description !== 'undefined' ? inv_description : '' %></textarea>
-  </label>
-  <label>Image Path
-    <input type="text" name="inv_image" required value="<%= typeof inv_image !== 'undefined' ? inv_image : '/images/vehicles/no-image.png' %>">
-  </label>
-  <label>Thumbnail Path
-    <input type="text" name="inv_thumbnail" required value="<%= typeof inv_thumbnail !== 'undefined' ? inv_thumbnail : '/images/vehicles/no-image-tn.png' %>">
-  </label>
-  <label>Price
-    <input type="number" step="0.01" name="inv_price" required value="<%= typeof inv_price !== 'undefined' ? inv_price : '' %>">
-  </label>
-  <label>Miles
-    <input type="number" name="inv_miles" required value="<%= typeof inv_miles !== 'undefined' ? inv_miles : '' %>">
-  </label>
-  <label>Color
-    <input type="text" name="inv_color" required value="<%= typeof inv_color !== 'undefined' ? inv_color : '' %>">
-  </label>
-  <label>Classification
-    <%- classifications %>
-  </label>
+  <label for="inv_make">Make</label>
+  <input type="text" id="inv_make" name="inv_make" required minlength="2" maxlength="50"
+         value="<%= inv_make || '' %>">
+
+  <label for="inv_model">Model</label>
+  <input type="text" id="inv_model" name="inv_model" required minlength="2" maxlength="50"
+         value="<%= inv_model || '' %>">
+
+  <label for="inv_year">Year</label>
+  <input type="number" id="inv_year" name="inv_year" required min="1900" max="2030"
+         value="<%= inv_year || '' %>">
+
+  <label for="inv_description">Description</label>
+  <textarea id="inv_description" name="inv_description" rows="5" minlength="2" maxlength="100" required>
+<%= inv_description || '' %></textarea>
+
+  <label for="inv_image">Image Path</label>
+  <input type="text" id="inv_image" name="inv_image" required
+         value="<%= inv_image || '/images/vehicles/no-image.png' %>">
+
+  <label for="inv_thumbnail">Thumbnail Path</label>
+  <input type="text" id="inv_thumbnail" name="inv_thumbnail" required
+         value="<%= inv_thumbnail || '/images/vehicles/no-image-tn.png' %>">
+
+  <label for="inv_price">Price</label>
+  <input type="number" step="0.01" id="inv_price" name="inv_price" required
+         value="<%= inv_price || '' %>">
+
+  <label for="inv_miles">Miles</label>
+  <input type="number" id="inv_miles" name="inv_miles" required
+         value="<%= inv_miles || '' %>">
+
+  <label for="inv_color">Color</label>
+  <input type="text" id="inv_color" name="inv_color" required
+         value="<%= inv_color || '' %>">
+
+  <label for="classificationList">Classification</label>
+  <%- classifications %>
+
   <input type="submit" value="Add Vehicle">
 </form>
