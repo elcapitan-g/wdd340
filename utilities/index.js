@@ -3,9 +3,6 @@ require("dotenv").config();
 
 const Util = {};
 
-/* ************************
- * Constructs the nav HTML unordered list
- ************************** */
 Util.getNav = async function () {
   const data = await invModel.getClassifications();
   let nav = "<ul>";
@@ -17,9 +14,6 @@ Util.getNav = async function () {
   return nav;
 };
 
-/* **************************************
- * Build the classification view HTML
- *************************************** */
 Util.buildClassificationGrid = async function (data) {
   let grid;
   if (data.length > 0) {
@@ -47,9 +41,6 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
-/**
- * Build a single listing element from data
- */
 Util.buildItemListing = async function (data) {
   if (!data) {
     return `<p>Sorry, no matching vehicles could be found.</p>`;
@@ -77,9 +68,7 @@ Util.buildItemListing = async function (data) {
   `;
 };
 
-/**
- * Build classification dropdown (select element)
- */
+
 Util.buildClassificationList = async function (classification_id = null) {
   const data = await invModel.getClassifications();
   let list = '<select name="classification_id" id="classificationList" required>';
@@ -93,41 +82,22 @@ Util.buildClassificationList = async function (classification_id = null) {
   return list;
 };
 
-/**
- * Wrap async controller functions with error handling
- */
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-/**
- * Stubbed login check (disabled)
- */
 Util.checkLogin = (req, res, next) => {
-  // Bypass login check for now
   next();
 };
 
-/**
- * Stubbed authorization check (disabled)
- */
 Util.checkAuthorizationManager = (req, res, next) => {
-  // Bypass role-based access for now
   next();
 };
 
-/**
- * Stubbed token checker (disabled)
- */
 Util.checkJWTToken = (req, res, next) => {
-  // No-op for now
   next();
 };
 
-/**
- * No-op cookie updater (inert if not using login)
- */
-Util.updateCookie = (accountData, res) => {
-  // Disabled while login is turned off
+Util.updateCookie = (accountData, res) => { 
 };
 
 module.exports = Util;
