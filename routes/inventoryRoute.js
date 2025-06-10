@@ -1,18 +1,20 @@
-console.log("✅ inventoryRoute.js loaded!");
-router.get("/test", (req, res) => res.send("✅ /inv/test works!"));
 // Needed Resources 
 const express = require("express");
 const router = new express.Router(); 
+console.log("✅ inventoryRoute.js loaded!");
+
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
 
+// 🔧 DEBUG TEST ROUTE — Safe after router is declared
+router.get("/test", (req, res) => res.send("✅ /inv/test works!"));
+
 // Inventory management main view
 router.get("/", 
-//utilities.checkAuthorizationManager, 
+  utilities.checkAuthorizationManager, 
   utilities.handleErrors(invController.buildManagementView)
 );
-
 // Protect all inventory management routes
 router.use([
   "/add-classification",
