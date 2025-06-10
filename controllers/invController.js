@@ -50,7 +50,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
  * Build the main vehicle management view
  */
 invCont.buildManagementView = async function (req, res, next) {
-  let nav = await utilities.getNav();
+  const nav = await utilities.getNav();
   const classificationSelect = await utilities.buildClassificationList();
   res.render("inventory/management", {
     title: "Vehicle Management",
@@ -65,7 +65,6 @@ invCont.buildManagementView = async function (req, res, next) {
  */
 invCont.buildAddClassification = async function (req, res, next) {
   const nav = await utilities.getNav();
-
   res.render("inventory/addClassification", {
     title: "Add New Classification",
     nav,
@@ -83,11 +82,12 @@ invCont.addClassification = async function (req, res, next) {
 
   if (response) {
     req.flash("notice", `The "${classification_name}" classification was successfully added.`);
+    const classificationSelect = await utilities.buildClassificationList(); // ✅ Fix: include dropdown again
     res.render("inventory/management", {
       title: "Vehicle Management",
       errors: null,
       nav,
-      classification_name,
+      classificationSelect, // ✅ Fix: ensure dropdown renders
     });
   } else {
     req.flash("notice", `Failed to add ${classification_name}`);
