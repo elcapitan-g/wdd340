@@ -18,7 +18,7 @@ const inventoryRoute = require("./routes/inventoryRoute.js");
 const accountRoute = require("./routes/accountRoute");
 const intentionalErrorRoute = require("./routes/intentionalErrorRoute.js");
 const utilities = require("./utilities/index.js");
-
+const pool = require("./database");
 
 app.set("view engine", "ejs");
 app.use(expressLayouts);
@@ -26,18 +26,14 @@ app.set("layout", "layouts/layout");
 
 
 app.use(static);
-
-
 app.get("/", utilities.handleErrors(baseController.buildHome));
-
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.use("/ierror", intentionalErrorRoute);
-
 app.use(async (req, res, next) => {
   next({
     status: 404,
-    message: "Unfortunately, we don't have that page in stock.",
+    message: "Cannot find it in stock.",
   });
 });
 
