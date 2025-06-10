@@ -8,7 +8,6 @@ listChange();
 function listChange() {
   const classification_id = classificationList.value;
 
-  
   if (!classification_id) {
     document.getElementById("inventoryDisplay").innerHTML = "";
     return;

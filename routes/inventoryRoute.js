@@ -4,18 +4,15 @@ const invController = require("../controllers/invController");
 const utilities = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
 
-// Inventory management main view
 router.get("/",
   utilities.handleErrors(invController.buildManagementView)
 );
-
-// AJAX route for classification selection
+n
 router.get(
   "/getInventory/:classification_id",
   utilities.handleErrors(invController.getInventoryJSON)
 );
 
-// Classification view routes
 router.get(
   "/type/:classificationId",
   utilities.handleErrors(invController.buildByClassificationId)
@@ -26,7 +23,7 @@ router.get(
   utilities.handleErrors(invController.buildByInventoryId)
 );
 
-// Classification management views
+
 router.get(
   "/add-classification",
   utilities.handleErrors(invController.buildAddClassification)
@@ -39,7 +36,6 @@ router.post(
   utilities.handleErrors(invController.addClassification)
 );
 
-// Inventory management views
 router.get(
   "/add-inventory",
   utilities.handleErrors(invController.buildAddInventory)
@@ -52,7 +48,6 @@ router.post(
   utilities.handleErrors(invController.addInventory)
 );
 
-// Edit inventory
 router.get(
   "/edit/:inventoryId",
   utilities.handleErrors(invController.buildEditInventory)
@@ -65,7 +60,6 @@ router.post(
   utilities.handleErrors(invController.updateInventory)
 );
 
-// Delete inventory
 router.get(
   "/delete/:inventoryId",
   utilities.handleErrors(invController.buildDeleteInventory)
