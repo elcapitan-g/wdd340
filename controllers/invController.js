@@ -39,7 +39,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
   const nav = await utilities.getNav();
   const itemName = `${data[0].inv_make} ${data[0].inv_model}`;
 
-  res.render("inventory/inventorydetail", {
+  res.render("inventory/inventoryDetail", {
     title: itemName,
     nav,
     listing,
