@@ -57,6 +57,8 @@ app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.use("/ierror", intentionalErrorRoute);
 
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
 // ✅ 404 fallback
 app.use(async (req, res, next) => {
   next({
