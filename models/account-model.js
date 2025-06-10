@@ -1,8 +1,6 @@
 const pool = require("../database/");
 
-/* *****************************
- *   Register new account
- * *************************** */
+
 async function registerAccount(
   account_firstname,
   account_lastname,
@@ -23,9 +21,7 @@ async function registerAccount(
   }
 }
 
-/* **********************
- *   Check for existing email
- * ********************* */
+
 async function checkExistingEmail(account_email, excludedEmail = null) {
   try {
     if(excludedEmail) {
@@ -43,9 +39,7 @@ async function checkExistingEmail(account_email, excludedEmail = null) {
   }
 }
 
-/* *****************************
- * Return account data using email address
- * ***************************** */
+
 async function getAccountByEmail(account_email) {
   try {
     const result = await pool.query(
@@ -58,9 +52,7 @@ async function getAccountByEmail(account_email) {
   }
 }
 
-/* *****************************
- * Return account data using account id
- * ***************************** */
+
 async function getAccountById(account_id) {
   try {
     const result = await pool.query(
