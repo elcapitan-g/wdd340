@@ -3,6 +3,7 @@ const expressLayouts = require("express-ejs-layouts");
 const env = require("dotenv").config();
 const app = express();
 const fs = require("fs"); 
+const cookieParser = require("cookie-parser"); // ✅ add this
 
 try {
   const files = fs.readdirSync("./routes");
@@ -10,7 +11,6 @@ try {
 } catch (err) {
   console.error("❌ Could not read ./routes/:", err);
 }
-
 
 const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
@@ -22,21 +22,23 @@ const pool = require("./database");
 
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.set("layout", "layouts/layout"); 
+app.set("layout", "layouts/layout");
 
+app.use(cookieParser()); // ✅ required to read login token cookie
+app.use(utilities.checkJWTToken); // ✅ required to load login info
 
 app.use(static);
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.use("/ierror", intentionalErrorRoute);
+
 app.use(async (req, res, next) => {
   next({
     status: 404,
     message: "Cannot find it in stock.",
   });
 });
-
 
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
