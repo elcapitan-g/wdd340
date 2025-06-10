@@ -1,6 +1,6 @@
 <h1><%= title %></h1>
 
-<!-- Flash Messages -->
+
 <% if (messages?.notice?.length) { %>
   <div class="notice">
     <% messages.notice.forEach(msg => { %>
@@ -9,7 +9,6 @@
   </div>
 <% } %>
 
-<!-- Validation Errors -->
 <% if (errors?.array?.length) { %>
   <ul class="notice">
     <% errors.array().forEach(error => { %>
@@ -18,7 +17,6 @@
   </ul>
 <% } %>
 
-<!-- Add Classification Form -->
 <form class="input-box" action="/inv/add-classification" method="post" novalidate>
   <label for="classification_name">Classification Name</label>
   <input
