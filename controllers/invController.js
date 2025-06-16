@@ -306,7 +306,7 @@ invCont.addVehicleNote = async function (req, res, next) {
     } else {
       req.flash("notice", "Failed to add note.");
     }
-    res.redirect(`/inv/${inventoryId}`);
+    res.redirect(`/inv/detail/${inventoryId}`);
   } catch (error) {
     console.error("addVehicleNote error:", error);
     next(error);
