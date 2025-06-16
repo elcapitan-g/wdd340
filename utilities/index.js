@@ -87,7 +87,7 @@ Util.handleErrors = (fn) => (req, res, next) =>
 
 // Middleware: JWT token check and setting res.locals for views
 Util.checkJWTToken = (req, res, next) => {
-  const token = req.cookies.jwt; // Make sure your JWT cookie is named 'jwt'
+  const token = req.cookies.jwt; // JWT cookie name should be 'jwt'
   if (!token) {
     return next();
   }
@@ -116,15 +116,17 @@ Util.setLocals = (req, res, next) => {
 };
 
 Util.checkLogin = (req, res, next) => {
+  // Placeholder, add real login checks if needed
   next();
 };
 
 Util.checkAuthorizationManager = (req, res, next) => {
+  // Placeholder for authorization checks
   next();
 };
 
-Util.updateCookie = (accountData, res) => { 
-  // Optional: code to update the JWT cookie after changes to account info
+Util.updateCookie = (accountData, res) => {
+  // Optional: code to update JWT cookie if needed
 };
 
 module.exports = Util;
