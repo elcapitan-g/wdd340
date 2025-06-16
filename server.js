@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 
 // Check JWT token for authentication on protected routes
 app.use(utilities.checkJWTToken);
-
+app.use(utilities.setLocals);
 // Serve static files like CSS, JS, images
 app.use(static);
 

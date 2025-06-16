@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const Util = {};
 
@@ -68,7 +69,6 @@ Util.buildItemListing = async function (data) {
   `;
 };
 
-
 Util.buildClassificationList = async function (classification_id = null) {
   const data = await invModel.getClassifications();
   let list = '<select name="classification_id" id="classificationList" required>';
@@ -85,6 +85,36 @@ Util.buildClassificationList = async function (classification_id = null) {
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
+// Middleware: JWT token check and setting res.locals for views
+Util.checkJWTToken = (req, res, next) => {
+  const token = req.cookies.jwt; // Make sure your JWT cookie is named 'jwt'
+  if (!token) {
+    return next();
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      console.log("JWT verification error:", err.message);
+      return next();
+    }
+    // Save decoded token payload to req for further use
+    req.accountData = decoded;
+    return next();
+  });
+};
+
+// Middleware to set res.locals for views based on login status
+Util.setLocals = (req, res, next) => {
+  if (req.accountData) {
+    res.locals.loggedin = 1;
+    res.locals.accountData = req.accountData;
+  } else {
+    res.locals.loggedin = 0;
+    res.locals.accountData = null;
+  }
+  next();
+};
+
 Util.checkLogin = (req, res, next) => {
   next();
 };
@@ -93,11 +123,8 @@ Util.checkAuthorizationManager = (req, res, next) => {
   next();
 };
 
-Util.checkJWTToken = (req, res, next) => {
-  next();
-};
-
 Util.updateCookie = (accountData, res) => { 
+  // Optional: code to update the JWT cookie after changes to account info
 };
 
 module.exports = Util;
