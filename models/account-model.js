@@ -25,15 +25,12 @@ async function registerAccount(account_firstname, account_lastname, account_emai
 /* -------- Check If Email Exists (Optional Exclusion for Updates) -------- */
 async function checkExistingEmail(account_email, excludedEmail = null) {
   try {
-    let sql, values;
+    let sql = "SELECT 1 FROM account WHERE account_email = $1";
+    let values = [account_email];
     if (excludedEmail) {
-      sql = "SELECT 1 FROM account WHERE account_email = $1 AND account_email != $2";
-      values = [account_email, excludedEmail];
-    } else {
-      sql = "SELECT 1 FROM account WHERE account_email = $1";
-      values = [account_email];
+      sql += " AND account_email != $2";
+      values.push(excludedEmail);
     }
-
     const result = await pool.query(sql, values);
     return result.rowCount > 0;
   } catch (error) {

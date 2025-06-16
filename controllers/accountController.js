@@ -11,6 +11,9 @@ async function buildRegister(req, res, next) {
     title: "Register",
     nav,
     errors: null,
+    account_firstname: "",
+    account_lastname: "",
+    account_email: "",
   });
 }
 
@@ -22,6 +25,21 @@ async function registerAccount(req, res) {
     account_email,
     account_password,
   } = req.body;
+
+  // Get validation errors from middleware (adjust based on your setup)
+  const errors = req.errors || null;
+
+  if (errors && errors.length > 0) {
+    // If validation errors, re-render register with sticky form values and errors
+    return res.status(400).render("account/register", {
+      title: "Register",
+      nav,
+      errors,
+      account_firstname,
+      account_lastname,
+      account_email,
+    });
+  }
 
   let hashedPassword;
   try {
@@ -35,6 +53,9 @@ async function registerAccount(req, res) {
       title: "Register",
       nav,
       errors: null,
+      account_firstname,
+      account_lastname,
+      account_email,
     });
   }
 
@@ -61,6 +82,9 @@ async function registerAccount(req, res) {
       title: "Register",
       nav,
       errors: null,
+      account_firstname,
+      account_lastname,
+      account_email,
     });
   }
 }

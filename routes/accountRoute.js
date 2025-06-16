@@ -8,7 +8,7 @@ const regValidate = require("../utilities/account-validation");
 router.use(utilities.checkJWTToken);
 router.use(utilities.setLocals);
 
-// Account management (protected)
+// Account management main page (requires login)
 router.get(
   "/", 
   utilities.checkLogin, 
@@ -24,7 +24,7 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 );
 
-// Logout
+// Logout route
 router.get("/logout", utilities.handleErrors(accountController.accountLogout));
 
 // Register routes
@@ -36,28 +36,28 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 );
 
-// Update account view (protected)
+// Update account view (requires login)
 router.get(
   "/update/:accountId", 
   utilities.checkLogin, 
   utilities.handleErrors(accountController.buildUpdate)
 );
 
-// Update account info (protected)
+// Update account info (requires login)
 router.post(
   "/update",
+  utilities.checkLogin,
   regValidate.updateRules(),
   regValidate.checkUpdateData,
-  utilities.checkLogin,
   utilities.handleErrors(accountController.updateAccount)
 );
 
-// Update password (protected)
+// Update password (requires login)
 router.post(
   "/update-password",
+  utilities.checkLogin,
   regValidate.updatePasswordRules(),
   regValidate.checkUpdatePasswordData,
-  utilities.checkLogin,
   utilities.handleErrors(accountController.updatePassword)
 );
 

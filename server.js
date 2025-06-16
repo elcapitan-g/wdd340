@@ -12,16 +12,16 @@ try {
   const files = fs.readdirSync("./routes");
   console.log("✅ Files in ./routes:", files);
 } catch (err) {
-  console.error("xCould not read ./routes/:", err);
+  console.error("x Could not read ./routes/:", err);
 }
 
 // Import routes and controllers
 const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
-const inventoryRoute = require("./routes/inventoryRoute.js");
+const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
-const intentionalErrorRoute = require("./routes/intentionalErrorRoute.js");
-const utilities = require("./utilities/index.js");
+const intentionalErrorRoute = require("./routes/intentionalErrorRoute");
+const utilities = require("./utilities/index");
 
 app.set("view engine", "ejs");
 app.use(expressLayouts);
@@ -38,6 +38,7 @@ app.use(
 );
 app.use(flash());
 
+// Middleware to parse form data
 app.use(express.urlencoded({ extended: true }));
 
 // Custom flash message helper available in views as messages()
@@ -46,9 +47,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Check JWT token for authentication on protected routes
+// JWT check and setting local variables for views
 app.use(utilities.checkJWTToken);
 app.use(utilities.setLocals);
+
 // Serve static files like CSS, JS, images
 app.use(static);
 
@@ -58,7 +60,7 @@ app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.use("/ierror", intentionalErrorRoute);
 
-// Favicon request handler
+// Favicon request handler (no content)
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 // 404 catch-all handler
@@ -75,7 +77,7 @@ app.use(async (err, req, res, next) => {
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
   console.dir(err);
   let message =
-    err.status == 404
+    err.status === 404
       ? err.message
       : "Oh no! There was a crash. Maybe try a different route?";
   res.status(err.status || 500).render("errors/error", {
@@ -85,6 +87,7 @@ app.use(async (err, req, res, next) => {
   });
 });
 
+// Start the server
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || "localhost";
 

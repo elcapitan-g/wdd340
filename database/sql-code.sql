@@ -241,3 +241,10 @@ WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 UPDATE inventory
 SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
+--notes
+CREATE TABLE vehicle_notes (
+  note_id SERIAL PRIMARY KEY,
+  inv_id INT NOT NULL REFERENCES inventory(inv_id),
+  note_text TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

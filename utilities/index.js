@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 
 const Util = {};
 
+/**
+ * Builds the dynamic navigation menu HTML
+ * @returns {Promise<string>} navigation HTML string
+ */
 Util.getNav = async function () {
   const data = await invModel.getClassifications();
   let nav = "<ul>";
@@ -15,6 +19,11 @@ Util.getNav = async function () {
   return nav;
 };
 
+/**
+ * Builds an HTML grid for vehicle classifications
+ * @param {Array} data Array of vehicle objects
+ * @returns {Promise<string>} HTML grid string
+ */
 Util.buildClassificationGrid = async function (data) {
   let grid;
   if (data.length > 0) {
@@ -42,6 +51,11 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
+/**
+ * Builds a detailed item listing HTML snippet
+ * @param {Object} data Vehicle object
+ * @returns {Promise<string>} HTML snippet
+ */
 Util.buildItemListing = async function (data) {
   if (!data) {
     return `<p>Sorry, no matching vehicles could be found.</p>`;
@@ -69,6 +83,11 @@ Util.buildItemListing = async function (data) {
   `;
 };
 
+/**
+ * Builds a classification dropdown list for forms
+ * @param {number|null} classification_id The classification to pre-select (optional)
+ * @returns {Promise<string>} HTML select dropdown
+ */
 Util.buildClassificationList = async function (classification_id = null) {
   const data = await invModel.getClassifications();
   let list = '<select name="classification_id" id="classificationList" required>';
@@ -82,12 +101,19 @@ Util.buildClassificationList = async function (classification_id = null) {
   return list;
 };
 
+/**
+ * Wraps async route handlers to catch errors
+ * @param {Function} fn Async function (req, res, next)
+ * @returns {Function} Express middleware
+ */
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-// Middleware: JWT token check and setting res.locals for views
+/**
+ * Middleware: Check for JWT token in cookies, verify and attach decoded data to req.accountData
+ */
 Util.checkJWTToken = (req, res, next) => {
-  const token = req.cookies.jwt; // JWT cookie name should be 'jwt'
+  const token = req.cookies?.jwt; // JWT cookie named 'jwt'
   if (!token) {
     return next();
   }
@@ -97,13 +123,14 @@ Util.checkJWTToken = (req, res, next) => {
       console.log("JWT verification error:", err.message);
       return next();
     }
-    // Save decoded token payload to req for further use
     req.accountData = decoded;
-    return next();
+    next();
   });
 };
 
-// Middleware to set res.locals for views based on login status
+/**
+ * Middleware: Sets res.locals properties for views based on login status
+ */
 Util.setLocals = (req, res, next) => {
   if (req.accountData) {
     res.locals.loggedin = 1;
@@ -115,18 +142,49 @@ Util.setLocals = (req, res, next) => {
   next();
 };
 
+/**
+ * Middleware placeholder to check if user is logged in
+ * You can customize this to redirect or deny access if not logged in
+ */
 Util.checkLogin = (req, res, next) => {
-  // Placeholder, add real login checks if needed
+  if (req.accountData) {
+    return next();
+  }
+  // Example: redirect to login if not logged in
+  // res.redirect('/account/login');
   next();
 };
 
+/**
+ * Middleware placeholder to check for authorization (e.g., employee/admin)
+ * You should enhance this with actual role checks from req.accountData
+ */
 Util.checkAuthorizationManager = (req, res, next) => {
-  // Placeholder for authorization checks
-  next();
+  if (!req.accountData) {
+    // Not logged in
+    return res.redirect("/account/login");
+  }
+
+  const allowedRoles = ["employee", "admin"];
+  if (allowedRoles.includes(req.accountData.account_type)) {
+    return next();
+  }
+
+  // Forbidden
+  res.status(403).render("errors/error", {
+    title: "Forbidden",
+    message: "You do not have permission to access this resource.",
+    nav: null, // optionally get nav here
+  });
 };
 
+/**
+ * Optional: Method to update JWT cookie on login or refresh (implement as needed)
+ */
 Util.updateCookie = (accountData, res) => {
-  // Optional: code to update JWT cookie if needed
+  // Example:
+  // const token = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+  // res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
 };
 
 module.exports = Util;

@@ -165,18 +165,16 @@ validate.checkUpdateData = async (req, res, next) => {
 
 /* -------- Update Password Data Check -------- */
 validate.checkUpdatePasswordData = async (req, res, next) => {
-  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+  // Only password field is validated here, but include account_id for context
+  const { account_id } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const nav = await utilities.getNav();
-    res.render("account/update", {
-      title: "Update",
+    res.render("account/update-password", { // Use a separate view if applicable
+      title: "Update Password",
       nav,
       errors,
       account_id,
-      account_firstname,
-      account_lastname,
-      account_email,
     });
     return;
   }
