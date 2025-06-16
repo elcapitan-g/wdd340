@@ -291,5 +291,38 @@ invCont.deleteInventory = async function (req, res, next) {
     });
   }
 };
+// --- Vehicle Notes ---
+
+// Add a vehicle note (POST)
+invCont.addVehicleNote = async function (req, res, next) {
+  try {
+    const inventoryId = parseInt(req.params.inventoryId);
+    const { note_text } = req.body;
+
+    const response = await invModel.addVehicleNote(inventoryId, note_text);
+
+    if (response) {
+      req.flash("notice", "Note added successfully.");
+    } else {
+      req.flash("notice", "Failed to add note.");
+    }
+    res.redirect(`/inv/${inventoryId}`);
+  } catch (error) {
+    console.error("addVehicleNote error:", error);
+    next(error);
+  }
+};
+
+// Get vehicle notes as JSON (GET)
+invCont.getVehicleNotes = async function (req, res, next) {
+  try {
+    const inventoryId = parseInt(req.params.inventoryId);
+    const notes = await invModel.getVehicleNotes(inventoryId);
+    res.json(notes);
+  } catch (error) {
+    console.error("getVehicleNotes error:", error);
+    next(error);
+  }
+};
 
 module.exports = invCont;

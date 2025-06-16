@@ -1,8 +1,6 @@
 const pool = require("../database/");
 
-/* ***************************
- *  Get all classification data
- * ************************** */
+
 async function getClassifications() {
   return await pool.query(
     "SELECT * FROM public.classification ORDER BY classification_name"
@@ -21,9 +19,7 @@ async function addClassification(classification_name) {
   }
 }
 
-/* ***************************
- *  Get all inventory items and classification_name by classification_id
- * ************************** */
+
 async function getInventoryByClassificationId(classification_id) {
   try {
     const data = await pool.query(
@@ -40,9 +36,7 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
-/* ***************************
- *  Get a single inventory item by id
- * ************************** */
+
 async function getInventoryByInventoryId(inventoryId) {
   try {
     const data = await pool.query(
@@ -58,9 +52,7 @@ async function getInventoryByInventoryId(inventoryId) {
   }
 }
 
-/*******************************
- * Add a single inventory item
- *******************************/
+
 async function addInventory(
   inv_make,
   inv_model,
@@ -103,9 +95,7 @@ async function addInventory(
   }
 }
 
-/*******************************
- * Update Inventory Data
- *******************************/
+
 async function updateInventory(
   inv_id,
   inv_make,
@@ -142,15 +132,35 @@ async function updateInventory(
   }
 }
 
-/*******************************
- * Delete Inventory Data
- *******************************/
+
 async function deleteInventory(inv_id) {
   const sql = "DELETE FROM inventory WHERE inv_id = $1";
   try {
     return await pool.query(sql, [inv_id]);
   } catch (error) {
     console.error("deleteInventory error. " + error);
+  }
+}
+
+async function addVehicleNote(inv_id, note_text) {
+  const sql = "INSERT INTO vehicle_notes (inv_id, note_text) VALUES ($1, $2)";
+  try {
+    return await pool.query(sql, [inv_id, note_text]);
+  } catch (error) {
+    console.error("addVehicleNote error: " + error);
+    throw error;
+  }
+}
+
+
+async function getVehicleNotes(inv_id) {
+  const sql = "SELECT note_text, created_at FROM vehicle_notes WHERE inv_id = $1 ORDER BY created_at DESC";
+  try {
+    const result = await pool.query(sql, [inv_id]);
+    return result.rows;
+  } catch (error) {
+    console.error("getVehicleNotes error: " + error);
+    throw error;
   }
 }
 
@@ -161,5 +171,7 @@ module.exports = {
   addClassification,
   addInventory,
   updateInventory,
-  deleteInventory
+  deleteInventory,
+  addVehicleNote,     
+  getVehicleNotes,
 };

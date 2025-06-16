@@ -70,4 +70,14 @@ router.post(
   utilities.handleErrors(invController.deleteInventory)
 );
 
+router.post(
+  "/notes/add/:inventoryId",
+  utilities.handleErrors(invController.addVehicleNote)
+);
+
+router.get(
+  "/notes/:inventoryId",
+  utilities.handleErrors(invController.getVehicleNotes)
+);
+
 module.exports = router;
