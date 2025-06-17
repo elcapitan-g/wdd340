@@ -3,11 +3,12 @@ const router = new express.Router();
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
-const checkAccountType = require("../middleware/checkAccountType");
+
+const { checkLogin } = require("../utilities");
 
 router.get(
   "/",
-  checkAccountType,
+  checkLogin,
   utilities.handleErrors(invController.buildManagementView)
 );
 
@@ -28,13 +29,13 @@ router.get(
 
 router.get(
   "/add-classification",
-  checkAccountType,
+  checkLogin,
   utilities.handleErrors(invController.buildAddClassification)
 );
 
 router.post(
   "/add-classification",
-  checkAccountType,
+  checkLogin,
   invValidate.classificationRules(),
   invValidate.checkClassificationData,
   utilities.handleErrors(invController.addClassification)
@@ -42,13 +43,13 @@ router.post(
 
 router.get(
   "/add-inventory",
-  checkAccountType,
+  checkLogin,
   utilities.handleErrors(invController.buildAddInventory)
 );
 
 router.post(
   "/add-inventory",
-  checkAccountType,
+  checkLogin,
   invValidate.inventoryRules(),
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.addInventory)
@@ -56,13 +57,13 @@ router.post(
 
 router.get(
   "/edit/:inventoryId",
-  checkAccountType,
+  checkLogin,
   utilities.handleErrors(invController.buildEditInventory)
 );
 
 router.post(
   "/update",
-  checkAccountType,
+  checkLogin,
   invValidate.inventoryRules(),
   invValidate.checkUpdateData,
   utilities.handleErrors(invController.updateInventory)
@@ -70,13 +71,13 @@ router.post(
 
 router.get(
   "/delete/:inventoryId",
-  checkAccountType,
+  checkLogin,
   utilities.handleErrors(invController.buildDeleteInventory)
 );
 
 router.post(
   "/delete/",
-  checkAccountType,
+  checkLogin,
   utilities.handleErrors(invController.deleteInventory)
 );
 
