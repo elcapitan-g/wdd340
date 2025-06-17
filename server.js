@@ -9,7 +9,7 @@ const flash = require("connect-flash");
 
 try {
   const files = fs.readdirSync("./routes");
-  console.log("✅ Files in ./routes:", files);
+  console.log(" Files in ./routes:", files);
 } catch (err) {
   console.error("xCould not read ./routes/:", err);
 }
@@ -77,5 +77,5 @@ const port = process.env.PORT || 3000;
 const host = process.env.HOST || "localhost";
 
 app.listen(port, () => {
-  console.log(`✅ App listening on ${host}:${port}`);
+  console.log(` App listening on ${host}:${port}`);
 });

@@ -5,20 +5,17 @@ const utilities = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
 const checkAccountType = require("../middleware/checkAccountType");
 
-// Management view (protected)
 router.get(
   "/",
   checkAccountType,
   utilities.handleErrors(invController.buildManagementView)
 );
 
-// Public JSON fetch
 router.get(
   "/getInventory/:classification_id",
   utilities.handleErrors(invController.getInventoryJSON)
 );
 
-// Public routes (visible to all)
 router.get(
   "/type/:classificationId",
   utilities.handleErrors(invController.buildByClassificationId)
@@ -29,7 +26,6 @@ router.get(
   utilities.handleErrors(invController.buildByInventoryId)
 );
 
-// Protected routes
 router.get(
   "/add-classification",
   checkAccountType,

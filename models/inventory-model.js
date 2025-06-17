@@ -1,8 +1,6 @@
 const pool = require("../database/");
 
-/* ***************************
- *  Get all classification data
- * ************************** */
+
 async function getClassifications() {
   return await pool.query(
     "SELECT * FROM public.classification ORDER BY classification_name"
@@ -21,9 +19,6 @@ async function addClassification(classification_name) {
   }
 }
 
-/* ***************************
- *  Get all inventory items and classification_name by classification_id
- * ************************** */
 async function getInventoryByClassificationId(classification_id) {
   try {
     const data = await pool.query(
@@ -40,9 +35,6 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
-/* ***************************
- *  Get a single inventory item by id
- * ************************** */
 async function getInventoryByInventoryId(inventoryId) {
   try {
     const data = await pool.query(
@@ -58,9 +50,6 @@ async function getInventoryByInventoryId(inventoryId) {
   }
 }
 
-/*******************************
- * Add a single inventory item
- *******************************/
 async function addInventory(
   inv_make,
   inv_model,
@@ -103,9 +92,6 @@ async function addInventory(
   }
 }
 
-/*******************************
- * Update Inventory Data
- *******************************/
 async function updateInventory(
   inv_id,
   inv_make,
@@ -142,9 +128,6 @@ async function updateInventory(
   }
 }
 
-/*******************************
- * Delete Inventory Data
- *******************************/
 async function deleteInventory(inv_id) {
   const sql = "DELETE FROM inventory WHERE inv_id = $1";
   try {
