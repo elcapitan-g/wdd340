@@ -2,6 +2,14 @@
 
 <h1>My Favorite Vehicles</h1>
 
+<% if (messages && messages.notice) { %>
+  <div class="flash">
+    <% messages.notice.forEach(msg => { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
 <% if (favorites.length === 0) { %>
   <p>You have no favorite vehicles yet.</p>
 <% } else { %>
@@ -9,7 +17,7 @@
     <% favorites.forEach(fav => { %>
       <li>
         <a href="/inv/detail/<%= fav.inv_id %>">
-          <%= fav.inv_make %> <%= fav.inv_model %> (<%= fav.inv_year %>)
+          <%= fav.inv_year %> <%= fav.inv_make %> <%= fav.inv_model %>
         </a>
         <form method="POST" action="/favorites/remove" style="display:inline;">
           <input type="hidden" name="inv_id" value="<%= fav.inv_id %>" />

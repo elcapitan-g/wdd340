@@ -23,7 +23,15 @@ favoritesController.addFavorite = async function(req, res, next) {
   try {
     const user_id = res.locals.accountData.account_id;
     const { inv_id } = req.body;
-    await favoritesModel.addFavorite(user_id, inv_id);
+
+    const result = await favoritesModel.addFavorite(user_id, inv_id);
+
+    if (result) {
+      req.flash("notice", "Vehicle added to your favorites.");
+    } else {
+      req.flash("notice", "That vehicle is already in your favorites.");
+    }
+
     res.redirect("back");
   } catch (error) {
     next(error);
