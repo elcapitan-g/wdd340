@@ -92,7 +92,12 @@ Util.handleErrors = (fn) => (req, res, next) =>
 
 // Placeholder login/role checks
 Util.checkLogin = (req, res, next) => {
-  next();
+  if (res.locals.loggedin) {
+    return next(); // Allow access
+  } else {
+    // Block access and redirect to login
+    return res.redirect("/account/login");
+  }
 };
 
 Util.checkAuthorizationManager = (req, res, next) => {

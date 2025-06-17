@@ -14,6 +14,7 @@ try {
 } catch (err) {
   console.error("xCould not read ./routes/:", err);
 }
+app.use(util.checkJWTToken);
 
 const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
