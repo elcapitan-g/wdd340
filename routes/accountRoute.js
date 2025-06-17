@@ -4,10 +4,16 @@ const accountController = require("../controllers/accountController");
 const utilities = require("../utilities");
 const regValidate = require("../utilities/account-validation");
 
+// Account Management View (requires login)
+router.get("/", 
+  utilities.checkLogin, 
+  utilities.handleErrors(accountController.buildAccountManagementView)
+);
 
-router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagementView));
-
-router.get("/login", utilities.handleErrors(accountController.buildLogin));
+// Login
+router.get("/login", 
+  utilities.handleErrors(accountController.buildLogin)
+);
 router.post(
   "/login",
   regValidate.loginRules(),
@@ -15,9 +21,15 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 );
 
-router.get("/logout", utilities.handleErrors(accountController.accountLogout));
+// Logout
+router.get("/logout", 
+  utilities.handleErrors(accountController.accountLogout)
+);
 
-router.get("/registration", utilities.handleErrors(accountController.buildRegister));
+// Registration
+router.get("/registration", 
+  utilities.handleErrors(accountController.buildRegister)
+);
 router.post(
   "/register",
   regValidate.registrationRules(),
@@ -25,20 +37,26 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 );
 
+// Account Update View
+router.get("/update/:account_id", 
+  utilities.checkLogin, 
+  utilities.handleErrors(accountController.buildUpdate)
+);
 
-router.get("/update/:accountId", utilities.handleErrors(accountController.buildUpdate));
+// Account Info Update Handler
 router.post(
   "/update",
-  regValidate.updateRules(), 
+  regValidate.updateRules(),
   regValidate.checkUpdateData,
   utilities.handleErrors(accountController.updateAccount)
-  );
+);
+
+// Password Update Handler
 router.post(
   "/update-password",
   regValidate.updatePasswordRules(),
   regValidate.checkUpdatePasswordData,
   utilities.handleErrors(accountController.updatePassword)
 );
-
 
 module.exports = router;
