@@ -7,10 +7,14 @@ const accountModel = require("../models/account-model");
 
 async function buildRegister(req, res) {
   let nav = await utilities.getNav();
+  // Pass empty strings for form fields initially to avoid undefined or [object Object]
   res.render("account/register", {
     title: "Register",
     nav,
     errors: null,
+    account_firstname: "",
+    account_lastname: "",
+    account_email: "",
   });
 }
 
@@ -33,6 +37,7 @@ async function registerAccount(req, res) {
         title: "Login",
         nav,
         errors: null,
+        account_email: "", // Clear email after successful registration
       });
     } else {
       req.flash("notice", "Sorry, the registration failed.");
@@ -40,6 +45,9 @@ async function registerAccount(req, res) {
         title: "Register",
         nav,
         errors: null,
+        account_firstname,
+        account_lastname,
+        account_email,
       });
     }
   } catch (error) {
@@ -49,6 +57,9 @@ async function registerAccount(req, res) {
       title: "Register",
       nav,
       errors: null,
+      account_firstname,
+      account_lastname,
+      account_email,
     });
   }
 }
@@ -59,6 +70,7 @@ async function buildLogin(req, res) {
     title: "Login",
     nav,
     errors: null,
+    account_email: "",
   });
 }
 

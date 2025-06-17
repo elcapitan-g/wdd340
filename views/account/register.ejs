@@ -1,4 +1,5 @@
 <h1><%- title %></h1>
+
 <%- messages() %>
 
 <% if (errors && errors.array) { %>
@@ -11,25 +12,47 @@
 
 <form class="input-box" action="/account/register" method="post">
   <label>First name
-    <input type="text" name="account_firstname" required autocomplete="given-name"
-      value="<%= (locals.account_firstname || (locals.accountData && locals.accountData.account_firstname) || '') %>">
+    <input
+      type="text"
+      name="account_firstname"
+      required
+      autocomplete="given-name"
+      value="<%= account_firstname || '' %>"
+    >
   </label>
 
   <label>Last name
-    <input type="text" name="account_lastname" required autocomplete="family-name"
-      value="<%= (locals.account_lastname || (locals.accountData && locals.accountData.account_lastname) || '') %>">
+    <input
+      type="text"
+      name="account_lastname"
+      required
+      autocomplete="family-name"
+      value="<%= account_lastname || '' %>"
+    >
   </label>
 
   <label>Email address
-    <input type="email" name="account_email" required autocomplete="email"
-      value="<%= (locals.account_email || (locals.accountData && locals.accountData.account_email) || '') %>">
+    <input
+      type="email"
+      name="account_email"
+      required
+      autocomplete="email"
+      value="<%= account_email || '' %>"
+    >
   </label>
 
   <label>Password
-    <input type="password" name="account_password" id="password" required autocomplete="new-password"
-      pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{12,}$">
+    <input
+      type="password"
+      name="account_password"
+      id="password"
+      required
+      autocomplete="new-password"
+      pattern="^(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{12,}$"
+    >
     <span class="reveal-button active" id="passwordHide">hide password</span>
   </label>
+
   <span class="fine-print">
     Password must be 12 characters or longer, contain 1 capital letter, 1 number and 1 special character
   </span>
@@ -44,9 +67,11 @@
     if (passwordInput.getAttribute("type") === "password") {
       passwordInput.setAttribute("type", "text");
       passwordHide.classList.remove("active");
+      passwordHide.textContent = "show password";
     } else {
       passwordInput.setAttribute("type", "password");
       passwordHide.classList.add("active");
+      passwordHide.textContent = "hide password";
     }
   });
 </script>
