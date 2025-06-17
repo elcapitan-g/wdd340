@@ -112,7 +112,7 @@ async function accountLogin(req, res) {
 
 async function buildAccountManagementView(req, res) {
   let nav = await utilities.getNav();
-  res.render("account/account-management", {
+  res.render("account/management", {
     title: "Account Management",
     nav,
     errors: null,
@@ -167,7 +167,7 @@ async function updateAccount(req, res) {
     utilities.updateCookie(updatedAccount, res);
 
     req.flash("notice", "Account successfully updated.");
-    return res.render("account/account-management", {
+    return res.render("account/management", {
       title: "Account Management",
       nav,
       errors: null,
@@ -196,7 +196,7 @@ async function updatePassword(req, res) {
 
     if (result) {
       req.flash("notice", "Password successfully updated.");
-      return res.render("account/account-management", {
+      return res.render("account/management", {
         title: "Account Management",
         nav,
         errors: null,
