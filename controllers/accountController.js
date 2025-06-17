@@ -7,7 +7,6 @@ const accountModel = require("../models/account-model");
 
 async function buildRegister(req, res) {
   let nav = await utilities.getNav();
-  // Pass empty strings for form fields initially to avoid undefined or [object Object]
   res.render("account/register", {
     title: "Register",
     nav,
@@ -37,7 +36,7 @@ async function registerAccount(req, res) {
         title: "Login",
         nav,
         errors: null,
-        account_email: "", // Clear email after successful registration
+        account_email: "",
       });
     } else {
       req.flash("notice", "Sorry, the registration failed.");
@@ -116,7 +115,7 @@ async function buildAccountManagementView(req, res) {
     title: "Account Management",
     nav,
     errors: null,
-    accountData: req.session.account,
+    accountData: res.locals.accountData, // from JWT middleware
   });
 }
 

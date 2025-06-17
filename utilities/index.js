@@ -1,8 +1,10 @@
 const invModel = require("../models/inventory-model");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const Util = {};
 
+// Generate navigation bar HTML
 Util.getNav = async function () {
   const data = await invModel.getClassifications();
   let nav = "<ul>";
@@ -14,6 +16,7 @@ Util.getNav = async function () {
   return nav;
 };
 
+// Build classification grid for inventory list
 Util.buildClassificationGrid = async function (data) {
   let grid;
   if (data.length > 0) {
@@ -41,6 +44,7 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
+// Build individual item listing page
 Util.buildItemListing = async function (data) {
   if (!data) {
     return `<p>Sorry, no matching vehicles could be found.</p>`;
@@ -68,7 +72,7 @@ Util.buildItemListing = async function (data) {
   `;
 };
 
-
+// Build dropdown list of classifications
 Util.buildClassificationList = async function (classification_id = null) {
   const data = await invModel.getClassifications();
   let list = '<select name="classification_id" id="classificationList" required>';
@@ -82,9 +86,11 @@ Util.buildClassificationList = async function (classification_id = null) {
   return list;
 };
 
+// Wrap controller logic in error handler
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
+// Placeholder login/role checks
 Util.checkLogin = (req, res, next) => {
   next();
 };
@@ -93,11 +99,42 @@ Util.checkAuthorizationManager = (req, res, next) => {
   next();
 };
 
+// JWT token validator for every request
 Util.checkJWTToken = (req, res, next) => {
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    res.locals.accountData = null;
+    res.locals.loggedin = 0;
+    return next();
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.locals.accountData = decoded;
+    res.locals.loggedin = 1;
+  } catch (err) {
+    console.error("JWT verification failed:", err.message);
+    res.clearCookie("jwt");
+    res.locals.accountData = null;
+    res.locals.loggedin = 0;
+  }
+
   next();
 };
 
-Util.updateCookie = (accountData, res) => { 
+// Issue JWT token and set cookie
+Util.updateCookie = (accountData, res) => {
+  const token = jwt.sign(accountData, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+    maxAge: 3600000,
+  });
 };
 
 module.exports = Util;
