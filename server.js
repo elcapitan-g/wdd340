@@ -44,6 +44,10 @@ app.use((req, res, next) => {
 
 app.use(utilities.checkJWTToken);
 
+const favoritesRoute = require("./routes/favoritesRoute");
+
+app.use("/favorites", favoritesRoute);
+
 app.use(static);
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
