@@ -210,9 +210,6 @@ Util.updateCookie = (accountData, res) => {
 }
 
 
-/* ****************************************
- *  Check Login
- * ************************************ */
 Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
     next();
