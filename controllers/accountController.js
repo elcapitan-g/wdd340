@@ -5,10 +5,6 @@ require("dotenv").config();
 const utilities = require("../utilities");
 const accountModel = require("../models/account-model");
 
-
-/* ****************************************
- *  Deliver registration view
- * *************************************** */
 async function buildRegister(req, res, next) {
   let nav = await utilities.getNav();
   res.render("account/register", {
@@ -18,9 +14,6 @@ async function buildRegister(req, res, next) {
   });
 }
 
-/* ****************************************
- *  Process Registration
- * *************************************** */
 async function registerAccount(req, res) {
   let nav = await utilities.getNav();
   const {
@@ -30,10 +23,8 @@ async function registerAccount(req, res) {
     account_password,
   } = req.body;
 
-  // Hash the password before storing
   let hashedPassword;
   try {
-    // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10);
   } catch (error) {
     req.flash(
@@ -74,12 +65,8 @@ async function registerAccount(req, res) {
   }
 }
 
-/* ****************************************
- *  Deliver login view
- * *************************************** */
 async function buildLogin(req, res, next) {
   let nav = await utilities.getNav();
-  // req.flash("notice", "This is a flash message.!!!@2")
   res.render("account/login", {
     title: "Login",
     errors: null,
@@ -87,9 +74,6 @@ async function buildLogin(req, res, next) {
   });
 }
 
-/* ****************************************
- *  Process login post request
- * ************************************ */
 async function accountLogin(req, res) {
   let nav = await utilities.getNav();
   const { account_email, account_password } = req.body;
@@ -111,9 +95,9 @@ async function accountLogin(req, res) {
       utilities.updateCookie(accountData, res);
      
       return res.redirect("/account/");
-    } // Need to have a wrong password option
+    } 
     else {
-      req.flash("notice", "Please check your credentials and try again."); // Login was hanging with bad password but correct id
+      req.flash("notice", "Wrong password."); 
       res.redirect("/account/");
     }
   } catch (error) {
@@ -121,9 +105,6 @@ async function accountLogin(req, res) {
   }
 }
 
-/* ****************************************
- *  Process account management get request
- * ************************************ */
 async function buildAccountManagementView(req, res) {
   let nav = await utilities.getNav();
   res.render("account/account-management", {
@@ -134,9 +115,6 @@ async function buildAccountManagementView(req, res) {
   return; 
 }
 
-/* ****************************************
- *  Process logout request
- * ************************************ */
 async function accountLogout(req, res) {
   res.clearCookie("jwt")
   delete res.locals.accountData;
@@ -147,9 +125,6 @@ async function accountLogout(req, res) {
 
 }
 
-/* ****************************************
- *  Deliver account update view get
- * *************************************** */
 async function buildUpdate(req, res, next) {
   let nav = await utilities.getNav();
 
@@ -166,9 +141,7 @@ async function buildUpdate(req, res, next) {
   });
 }
 
-/* ****************************************
- *  Process account update post
- * *************************************** */
+
 async function updateAccount(req, res) {
   let nav = await utilities.getNav();
   const {
@@ -176,7 +149,7 @@ async function updateAccount(req, res) {
     account_firstname,
     account_lastname,
     account_email,
-    // account_password,
+    
   } = req.body;
 
   const regResult = await accountModel.updateAccount(
@@ -192,13 +165,11 @@ async function updateAccount(req, res) {
       `Congratulations, you've updated ${account_firstname}.`
     );
 
-    //Update the cookie accountData
-    // TODO: Better way to do this?
 
-    const accountData = await accountModel.getAccountById(account_id); // Get it from db so we can remake the cookie
+    const accountData = await accountModel.getAccountById(account_id); 
     delete accountData.account_password;
-    res.locals.accountData.account_firstname = accountData.account_firstname; // So it displays correctly
-    utilities.updateCookie(accountData, res); // Remake the cookie with new data
+    res.locals.accountData.account_firstname = accountData.account_firstname; 
+    utilities.updateCookie(accountData, res); 
 
     res.status(201).render("account/account-management", {
       title: "Management",
@@ -220,18 +191,13 @@ async function updateAccount(req, res) {
 }
 
 
-/* ****************************************
- *  Process account password update post
- * *************************************** */
 async function updatePassword(req, res) {
   let nav = await utilities.getNav();
 
   const { account_id, account_password } = req.body;
 
-  // Hash the password before storing.
   let hashedPassword;
   try {
-    // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10);
   } catch (error) {
     req.flash(
