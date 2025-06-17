@@ -1,35 +1,33 @@
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
-const dotenv = require("dotenv").config();
+const env = require("dotenv").config();
+const app = express();
 const fs = require("fs");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
 
-const app = express();
-
-// Log route files at startup
+// Log files in routes folder at startup (optional)
 try {
   const files = fs.readdirSync("./routes");
   console.log("✅ Files in ./routes:", files);
 } catch (err) {
-  console.error("❌ Could not read ./routes/:", err);
+  console.error("xCould not read ./routes/:", err);
 }
 
 // Import routes and controllers
+const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
-const inventoryRoute = require("./routes/inventoryRoute");
+const inventoryRoute = require("./routes/inventoryRoute.js");
 const accountRoute = require("./routes/accountRoute");
-const intentionalErrorRoute = require("./routes/intentionalErrorRoute");
-const utilities = require("./utilities/index");
+const intentionalErrorRoute = require("./routes/intentionalErrorRoute.js");
+const utilities = require("./utilities/index.js");
 
-// Set up EJS with layouts
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "layouts/layout");
 
 // Middleware
-app.use(express.static("public")); // ✅ serve static files
 app.use(cookieParser());
 app.use(
   session({
@@ -39,28 +37,31 @@ app.use(
   })
 );
 app.use(flash());
-app.use(express.urlencoded({ extended: true })); // parse form POST data
 
-// Flash messages in all views
+app.use(express.urlencoded({ extended: true }));
+
+// Custom flash message helper available in views as messages()
 app.use((req, res, next) => {
   res.locals.messages = () => req.flash();
   next();
 });
 
-// JWT + view locals middleware
+// Check JWT token for authentication on protected routes
 app.use(utilities.checkJWTToken);
 app.use(utilities.setLocals);
+// Serve static files like CSS, JS, images
+app.use(static);
 
-// Route handling
+// Routes
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.use("/ierror", intentionalErrorRoute);
 
-// Favicon
+// Favicon request handler
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
-// 404 Catch-all
+// 404 catch-all handler
 app.use(async (req, res, next) => {
   next({
     status: 404,
@@ -68,13 +69,13 @@ app.use(async (req, res, next) => {
   });
 });
 
-// General Error Handler
+// Error handler middleware
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
   console.dir(err);
   let message =
-    err.status === 404
+    err.status == 404
       ? err.message
       : "Oh no! There was a crash. Maybe try a different route?";
   res.status(err.status || 500).render("errors/error", {
@@ -84,9 +85,9 @@ app.use(async (err, req, res, next) => {
   });
 });
 
-// Start the server
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || "localhost";
+
 app.listen(port, () => {
   console.log(`✅ App listening on ${host}:${port}`);
 });
