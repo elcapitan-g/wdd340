@@ -1,11 +1,10 @@
-<%- include('../partials/header') %>
 
 <h1>My Favorite Vehicles</h1>
 
 <% if (messages && messages.notice) { %>
   <div class="flash">
     <% messages.notice.forEach(msg => { %>
-
+      <p><%= msg %></p>
     <% }) %>
   </div>
 <% } %>
