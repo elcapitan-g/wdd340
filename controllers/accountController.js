@@ -116,6 +116,7 @@ async function buildAccountManagementView(req, res) {
     title: "Account Management",
     nav,
     errors: null,
+    accountData: req.session.account,
   });
 }
 
