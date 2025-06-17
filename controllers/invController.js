@@ -38,6 +38,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
     title: itemName,
     nav,
     listing,
+    vehicle: data
   });
 };
 
