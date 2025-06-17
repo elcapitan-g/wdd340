@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const Util = {};
-
+console.log("JWT_SECRET is:", process.env.JWT_SECRET);
 // Generate navigation bar HTML
 Util.getNav = async function () {
   const data = await invModel.getClassifications();
